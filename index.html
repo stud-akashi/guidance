@@ -175,35 +175,109 @@ ul{
       <li><h1>Guidance</h1></li>
       <li>
         <ul>
-          <li><input type="checkbox" value="501" id="501" checked="checked" /><label for="501">Studio 501</label></li>
-          <li><input type="text" name="client-501-1" id="client-501-1" value="501の社名" /></li>
-          <li><input type="text" name="client-501-2" id="client-501-2" value="501の担当者" /></li>
+          <li><input type="checkbox" value="501" id="check501" checked="checked" /><label for="check501">Studio 501</label></li>
+          <li><input type="text" name="client501A" id="client501A" value="501 社名" /></li>
+          <li><input type="text" name="client501B" id="client501B" value="501 担当者名" /></li>
           </ul>
       </li>
       <li>
           <ul>
-              <li><input type="checkbox" value="201" id="201" checked="checked" /><label for="201">Studio 201</label></li>
-              <li><input type="text" name="client-201-1" id="client-201-1" value="201の社名" /></li>
-              <li><input type="text" name="client-201-2" id="client-201-2" value="201の担当者" /></li>
+              <li><input type="checkbox" value="201" id="check201" checked="checked" /><label for="check201">Studio 201</label></li>
+              <li><input type="text" name="client201A" id="client201A" value="201 社名" /></li>
+              <li><input type="text" name="client201B" id="client201B" value="201 担当者名" /></li>
           </ul>
       </li>
       <li>
           <ul>
-              <li><input type="checkbox" value="102" id="102" checked="checked" /><label for="102">Studio 102</label></li>
-              <li><input type="text" name="client-102-1" id="client-102-1" value="102の社名" /></li>
-              <li><input type="text" name="client-102-2" id="client-102-2" value="102の担当者" /></li>
+              <li><input type="checkbox" value="102" id="check102" checked="checked" /><label for="check102">Studio 102</label></li>
+              <li><input type="text" name="client102A" id="client102A" value="102 社名" /></li>
+              <li><input type="text" name="client102B" id="client102B" value="102 担当者名" /></li>
           </ul>
       </li>
-      <!-- <li><button id="button-save">保存</button></li> -->
       <li><button id="button-print" style="padding-left: 30px; padding-right: 30px;">印刷</button></li>
+      <li><button id="button-save" style="padding-left: 30px; padding-right: 30px;">保存</button></li>
     </ul>
   </form>
 </div>
+<div id="status">前回情報を取得中...</div>
+
+
+
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
 
-    //// 印刷ボタンクリック時（印刷画面をオープンする）
+//読み込み
+    $.getJSON('https://script.google.com/macros/s/AKfycbwfPRbaXmw_d2EGNC3cV_ery_MwBh5Htwr73hbf8p9vPWD6okMy/exec')
+       // jsonの読み込みに成功した時
+      .done(function(json){
+        console.log(json);
+        $("#status").text('前回の情報を取得しました');
+        
+        if(json['check501'] != '501'){
+          $("#check501").prop('checked', false);
+        }
+        $("#client501A").val(json['client501A']);
+        $("#client501B").val(json['client501B']);
+        
+        if(json['check201'] != '201'){
+          $("#check201").prop('checked', false);
+        }
+        $("#client201A").val(json['client201A']);
+        $("#client201B").val(json['client201B']);
+        
+        if(json['check102'] != '102'){
+          $("#check102").prop('checked', false);
+        }
+        $("#client102A").val(json['client102A']);
+        $("#client102B").val(json['client102B']);
+        
+      })
+       // jsonの読み込みに失敗した時
+      .fail(function(){
+        $("#status").text('前回情報の取得に失敗しました。');
+      });
+    
+
+//保存
+$("#button-save").click(function() {
+    $("#button-save").attr("disabled", true);
+    $("#status").text('サーバに保存中...');
+
+    var data = {
+        check501: $("#check501").val(),
+        client501A: $("#client501A").val(),
+        client501B: $("#client501B").val(),
+        check201: $("#check201").val(),
+        client201A: $("#client201A").val(),
+        client201B: $("#client201B").val(),
+        check102: $("#check102").val(),
+        client102A: $("#client102A").val(),
+        client102B: $("#client102B").val(),
+    };
+
+    // 通信実行
+    $.ajax({
+        type:"post",
+        url:"https://script.google.com/macros/s/AKfycbwfPRbaXmw_d2EGNC3cV_ery_MwBh5Htwr73hbf8p9vPWD6okMy/exec",
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        success: function(json_data) {   // 200 OK時
+            $("#status").text('保存しました');
+        },
+        error: function() {         // HTTPエラー時
+            $("#status").text('保存に失敗しました');
+        },
+        complete: function() {      // 成功・失敗に関わらず通信が終了した際の処理
+            $("#button-save").attr("disabled", false);  // ボタンを再び enableにする
+        }
+    });
+});
+
+
+//印刷
     $('#button-print').on('click', function (e) {
     updatePage();
       var cnt = $('input:checkbox:checked').length;
@@ -216,11 +290,11 @@ $(document).ready(function () {
     })
 })
 
-    // 更新処理
+// 更新処理
     function updatePage() {
         // 各欄の更新処理
-        $("#name2").html($("#client-201-1").val() + '<br>' + $("#client-201-2").val());
-        $("#name3").html($("#client-102-1").val() + '<br>' + $("#client-102-2").val());
+        $("#name2").html($("#client201A").val() + '<br>' + $("#client201B").val());
+        $("#name3").html($("#client102A").val() + '<br>' + $("#client102B").val());
 
         var cnt = $('input:checkbox:checked').length;
         var studios = $('input:checkbox:checked').map(function(){return $(this).val();}).get();
@@ -237,7 +311,7 @@ $(document).ready(function () {
           $(".line2").css("top", "86mm");
           $(".line3").css("display", "none");
           $("#studio2").text(studios[0]);
-          $("#name2").html($("#client-" + studios[0] + "-1").val() + '<br>' + $("#client-" + studios[0] + "-2").val());
+          $("#name2").html($("#client" + studios[0] + "A").val() + '<br>' + $("#client" + studios[0] + "B").val());
         }
         //2行
         else if(cnt == 2){
@@ -247,9 +321,9 @@ $(document).ready(function () {
           $(".line3").css("display", "block");
           $(".line3").css("top", "130mm");
           $("#studio1").text(studios[0]);
-          $("#name1").html($("#client-" + studios[0] + "-1").val() + '<br>' + $("#client-" + studios[0] + "-2").val());
+          $("#name1").html($("#client" + studios[0] + "A").val() + '<br>' + $("#client" + studios[0] + "B").val());
           $("#studio3").text(studios[1]);
-          $("#name3").html($("#client-" + studios[1] + "-1").val() + '<br>' + $("#client-" + studios[1] + "-2").val());
+          $("#name3").html($("#client" + studios[1] + "A").val() + '<br>' + $("#client" + studios[1] + "B").val());
         }
         //3行
         else{
@@ -260,11 +334,11 @@ $(document).ready(function () {
           $(".line3").css("display", "block");
           $(".line3").css("top", "152mm");
           $("#studio1").text(studios[0]);
-          $("#name1").html($("#client-" + studios[0] + "-1").val() + '<br>' + $("#client-" + studios[0] + "-2").val());
+          $("#name1").html($("#client" + studios[0] + "A").val() + '<br>' + $("#client" + studios[0] + "B").val());
           $("#studio2").text(studios[1]);
-          $("#name2").html($("#client-" + studios[1] + "-1").val() + '<br>' + $("#client-" + studios[1] + "-2").val());
+          $("#name2").html($("#client" + studios[1] + "A").val() + '<br>' + $("#client" + studios[1] + "B").val());
           $("#studio3").text(studios[2]);
-          $("#name3").html($("#client-" + studios[2] + "-1").val() + '<br>' + $("#client-" + studios[2] + "-2").val());
+          $("#name3").html($("#client" + studios[2] + "A").val() + '<br>' + $("#client" + studios[2] + "B").val());
         }
     }
 </script>
