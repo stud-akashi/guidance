@@ -220,26 +220,34 @@ ul{
 <!--表示部 -->
 <div class="control">
   <form method="" action="" onsubmit="return false">
+<datalist id="clientList">
+<option>AOI Pro.</option>
+<option>東北新社</option>
+<option>TYO</option>
+<option>太陽企画</option>
+<option>博報堂プロダクツ</option>
+<option>電通クリエーティブＸ</option>
+</datalist>　
     <ul>
       <li><h1>Guidance</h1></li>
       <li>
         <ol>
           <li><input type="checkbox" value="501" id="check501" checked="checked" /><label for="check501">Studio 501</label></li>
-          <li><input type="text" name="client501A" class="textbox" id="client501A" placeholder="〇〇プロダクション" /></li>
+          <li><input type="text" name="client501A" class="textbox" id="client501A" placeholder="プロダクション名" list="clientList" /></li>
           <li><input type="text" name="client501B" class="textbox" id="client501B" placeholder="〇〇様" /></li>
           </ol>
       </li>
       <li>
           <ol>
               <li><input type="checkbox" value="201" id="check201" checked="checked" /><label for="check201">Studio 201</label></li>
-              <li><input type="text" name="client201A" class="textbox" id="client201A" placeholder="〇〇プロダクション" /></li>
+              <li><input type="text" name="client201A" class="textbox" id="client201A" placeholder="プロダクション名" list="clientList" /></li>
               <li><input type="text" name="client201B" class="textbox" id="client201B" placeholder="〇〇様" /></li>
           </ol>
       </li>
       <li>
           <ol>
               <li><input type="checkbox" value="102" id="check102" checked="checked" /><label for="check102">Studio 102</label></li>
-              <li><input type="text" name="client102A" class="textbox" id="client102A" placeholder="〇〇プロダクション" /></li>
+              <li><input type="text" name="client102A" class="textbox" id="client102A" placeholder="プロダクション名" list="clientList" /></li>
               <li><input type="text" name="client102B" class="textbox" id="client102B" placeholder="〇〇様" /></li>
           </ol>
       </li>
@@ -289,7 +297,42 @@ $(document).ready(function () {
 $('input').on('keyup', function () {
     updatePage();
 })
-    
+
+///チェックボックスでenable/disable
+$("#check501").click(function () {
+    updatePage();
+    if($("#check501").prop('checked') == false){
+      $("#client501A").prop('disabled', true);
+      $("#client501B").prop('disabled', true);
+    }else{
+      $("#client501A").prop('disabled', false);
+      $("#client501B").prop('disabled', false);
+    }
+})
+
+$("#check201").click(function () {
+    updatePage();
+    if($("#check201").prop('checked') == false){
+      $("#client201A").prop('disabled', true);
+      $("#client201B").prop('disabled', true);
+    }else{
+      $("#client201A").prop('disabled', false);
+      $("#client201B").prop('disabled', false);
+    }
+})
+
+$("#check102").click(function () {
+    updatePage();
+    if($("#check102").prop('checked') == false){
+      $("#client102A").prop('disabled', true);
+      $("#client102B").prop('disabled', true);
+    }else{
+      $("#client102A").prop('disabled', false);
+      $("#client102B").prop('disabled', false);
+    }
+})
+
+
 //保存
 $("#button-save").click(function() {
   saveGas();
