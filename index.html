@@ -210,6 +210,7 @@ $(document).ready(function () {
         if(cnt == 0){
           alert('全部屋が無効になっています。');
         } else {
+          alert('Tips\n・送信先プリンターをお間違えなく\n・ヘッダーとフッターを非表示にしてください\n　（iOSでは設定できないので、必ず印刷されます）\n\niPhone/Safariの場合\n・空の2ページ目が出力されるので、ページ範囲で無効にしてください');
           window.print();
       }
     })
