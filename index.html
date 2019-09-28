@@ -212,22 +212,22 @@ ul{
       <li>
         <ol>
           <li><input type="checkbox" value="501" id="check501" checked="checked" /><label for="check501">Studio 501</label></li>
-          <li><input type="text" name="client501A" class="textbox" id="client501A" value="501 社名" /></li>
-          <li><input type="text" name="client501B" class="textbox" id="client501B" value="501 担当者名" /></li>
+          <li><input type="text" name="client501A" class="textbox" id="client501A" placeholder="〇〇プロダクション" /></li>
+          <li><input type="text" name="client501B" class="textbox" id="client501B" placeholder="〇〇様" /></li>
           </ol>
       </li>
       <li>
           <ol>
               <li><input type="checkbox" value="201" id="check201" checked="checked" /><label for="check201">Studio 201</label></li>
-              <li><input type="text" name="client201A" class="textbox" id="client201A" value="201 社名" /></li>
-              <li><input type="text" name="client201B" class="textbox" id="client201B" value="201 担当者名" /></li>
+              <li><input type="text" name="client201A" class="textbox" id="client201A" placeholder="〇〇プロダクション" /></li>
+              <li><input type="text" name="client201B" class="textbox" id="client201B" placeholder="〇〇様" /></li>
           </ol>
       </li>
       <li>
           <ol>
               <li><input type="checkbox" value="102" id="check102" checked="checked" /><label for="check102">Studio 102</label></li>
-              <li><input type="text" name="client102A" class="textbox" id="client102A" value="102 社名" /></li>
-              <li><input type="text" name="client102B" class="textbox" id="client102B" value="102 担当者名" /></li>
+              <li><input type="text" name="client102A" class="textbox" id="client102A" placeholder="〇〇プロダクション" /></li>
+              <li><input type="text" name="client102B" class="textbox" id="client102B" placeholder="〇〇様" /></li>
           </ol>
       </li>
       <li><button id="button-save">保存</button><button id="button-print">印刷</button></li>
@@ -246,7 +246,7 @@ $(document).ready(function () {
     $.getJSON('https://script.google.com/macros/s/AKfycbwfPRbaXmw_d2EGNC3cV_ery_MwBh5Htwr73hbf8p9vPWD6okMy/exec')
       .done(function(json){ //成功
         console.log(json);
-        $("#status").text('前回の情報を取得しました');
+        $("#status").text('最終更新：' + json['lastUpdate']);
         
         if(json['check501'] != '501'){
           $("#check501").prop('checked', false);
@@ -267,7 +267,7 @@ $(document).ready(function () {
         $("#client102B").val(json['client102B']);
         
       }).fail(function(){ //失敗
-        $("#status").text('前回情報の取得に失敗しました。');
+        $("#status").text('前回情報の取得に失敗しました');
       }).always(function(){ //常に
         updatePage();
     });
