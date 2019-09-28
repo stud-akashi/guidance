@@ -262,8 +262,7 @@ $("#button-save").click(function() {
     $.ajax({
         type:"post",
         url:"https://script.google.com/macros/s/AKfycbwfPRbaXmw_d2EGNC3cV_ery_MwBh5Htwr73hbf8p9vPWD6okMy/exec",
-        data:JSON.stringify(data),
-        contentType: 'application/json',
+        data: data,
         success: function(json_data) {   // 200 OK時
             $("#status").text('保存しました');
         },
