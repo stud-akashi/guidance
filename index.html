@@ -2,6 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+    <title>Guidance</title>
 <script>
   (function(d) {
     var config = {
@@ -18,9 +19,23 @@
   size: A4 portrait;
   margin: 0;
 }
-
+@media screen{
+  div.page{
+    display: none;
+  }
+  ul{
+    list-style-type: none;
+  }
+  body{
+    font-size: 18px;
+  }
+  input, button{
+    font-size: 18px;
+    margin: 3px;
+  }
+}
       
-@media print{
+ @media print{
   body {
     -webkit-print-color-adjust: exact;
     top:0 !IMPORTANT;
@@ -28,7 +43,11 @@
     width:200mm !IMPORTANT;
     height:290mm !IMPORTANT;
   }
+
+div.control{
+  display: none;
 }
+
 div.page{
   position: absolute;
   top: 50%;
@@ -100,7 +119,7 @@ ul{
 }
 
 .line1{
-  top: 26mm;
+  top: 20mm;
 }
 
 .line2{
@@ -109,7 +128,7 @@ ul{
 }
 
 .line3{
-  top: 158mm;
+  top: 152mm;
 }
 
 .clients{
@@ -118,7 +137,9 @@ ul{
   width: 160mm;
   padding-left: 12mm;
   padding-top: 33mm;
-
+      }
+      
+/}
 -->
 </style>
 </head>
@@ -128,26 +149,17 @@ ul{
       <div class="line-left">
         <ul>
           <li class="lines line1">
-            <span class="allign-bottom"><span class="text-small">Studio </span>501</span>
+          <span class="allign-bottom"><span class="text-small">Studio </span><span id="studio1" /></span>
           </li>
-          <li class="clients line1">
-            STUD Co., Ltd.<br>
-            岡田
-          </li>
+          <li class="clients line1" id="name1"></li>
           <li class="lines line2">
-            <span class="allign-bottom"><span class="text-small">Studio </span>201</span>
+            <span class="allign-bottom"><span class="text-small">Studio </span><span id="studio2" /></span>
           </li>
-          <li class="clients line2">
-            STUD Co., Ltd.<br>
-            岡田
-          </li>
+          <li class="clients line2" id="name2"></li>
           <li class="lines line3">
-             <span class="allign-bottom"><span class="text-small">Studio </span>102</span>
+             <span class="allign-bottom"><span class="text-small">Studio </span><span id="studio3" /></span>
           </li>
-          <li class="clients line3">
-            STUD Co., Ltd.<br>
-            岡田
-          </li>
+          <li class="clients line3" id="name3"></li>
         </ul>
       </div>
       <div class="stud">
@@ -155,5 +167,120 @@ ul{
         STUD Co., Ltd.
       </div>
 </div>
+
+
+<div class="control">
+  <form method="" action="" onsubmit="return false">
+    <ul>
+      <li><h1>Guidance</h1></li>
+      <li>
+        <ul>
+          <li><input type="checkbox" value="501" id="501" checked="checked" /><label for="501">Studio 501</label></li>
+          <li><input type="text" name="name-501-1" id="name-501-1" value="501の社名" /></li>
+          <li><input type="text" name="name-501-2" id="name-501-2" value="501の担当者" /></li>
+          </ul>
+      </li>
+      <li>
+          <ul>
+              <li><input type="checkbox" value="201" id="201" checked="checked" /><label for="201">Studio 201</label></li>
+              <li><input type="text" name="name-201-1" id="name-201-1" value="201の社名" /></li>
+              <li><input type="text" name="name-201-2" id="name-201-2" value="201の担当者" /></li>
+          </ul>
+      </li>
+      <li>
+          <ul>
+              <li><input type="checkbox" value="102" id="102" checked="checked" /><label for="102">Studio 102</label></li>
+              <li><input type="text" name="name-102-1" id="name-102-1" value="102の社名" /></li>
+              <li><input type="text" name="name-102-2" id="name-102-2" value="102の担当者" /></li>
+          </ul>
+      </li>
+      <!-- <li><button id="button-save">保存</button></li> -->
+      <li><button id="button-print" style="padding-left: 30px; padding-right: 30px;">印刷</button></li>
+    </ul>
+  </form>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+        $(document).ready(function () {
+
+        //// 入力項目の更新に応じてプレビューも変更
+        $('input').on('keyup', function () {
+            updatePreview();
+        })
+
+        //// 入力項目の更新に応じてプレビューも変更
+        $('input').change(function () {
+            updatePreview();
+        })
+
+        //// 印刷ボタンクリック時（印刷画面をオープンする）
+        $('#button-print').on('click', function (e) {
+        var cnt = $('input:checkbox:checked').length;
+          if(cnt == 0){
+            alert('全部屋が無効になっています。');
+          } else {
+            window.print();
+        }
+        })
+
+        // 画面初期化処理
+        updatePreview();
+
+    })
+
+    // プレビューの更新処理
+    function updatePreview() {
+
+        // 各欄の更新処理
+        $("#name2").html($("#name-201-1").val() + '<br>' + $("#name-201-2").val());
+        $("#name3").html($("#name-102-1").val() + '<br>' + $("#name-102-2").val());
+
+
+        var cnt = $('input:checkbox:checked').length;
+        var studios = $('input:checkbox:checked').map(function(){return $(this).val();}).get();
+        //0行
+        if(cnt == 0){
+          $(".line1").css("display", "none");
+          $(".line2").css("display", "none");
+          $(".line3").css("display", "none");
+        }
+        //1行
+        else if(cnt == 1){
+          $(".line1").css("display", "none");
+          $(".line2").css("display", "block");
+          $(".line2").css("top", "86mm");
+          $(".line3").css("display", "none");
+          $("#studio2").text(studios[0]);
+          $("#name2").html($("#name-" + studios[0] + "-1").val() + '<br>' + $("#name-" + studios[0] + "-2").val());
+        }
+        //2行
+        else if(cnt == 2){
+          $(".line1").css("display", "block");
+          $(".line1").css("top", "46mm");
+          $(".line2").css("display", "none");
+          $(".line3").css("display", "block");
+          $(".line3").css("top", "130mm");
+          $("#studio1").text(studios[0]);
+          $("#name1").html($("#name-" + studios[0] + "-1").val() + '<br>' + $("#name-" + studios[0] + "-2").val());
+          $("#studio3").text(studios[1]);
+          $("#name3").html($("#name-" + studios[1] + "-1").val() + '<br>' + $("#name-" + studios[1] + "-2").val());
+        }
+        //3行
+        else{
+          $(".line1").css("display", "block");
+          $(".line1").css("top", "20mm");
+          $(".line2").css("display", "block");
+          $(".line2").css("top", "86mm");
+          $(".line3").css("display", "block");
+          $(".line3").css("top", "152mm");
+          $("#studio1").text(studios[0]);
+          $("#name1").html($("#name-" + studios[0] + "-1").val() + '<br>' + $("#name-" + studios[0] + "-2").val());
+          $("#studio2").text(studios[1]);
+          $("#name2").html($("#name-" + studios[1] + "-1").val() + '<br>' + $("#name-" + studios[1] + "-2").val());
+          $("#studio3").text(studios[2]);
+          $("#name3").html($("#name-" + studios[2] + "-1").val() + '<br>' + $("#name-" + studios[2] + "-2").val());
+        }
+    }
+</script>
   </body>
 </html>
