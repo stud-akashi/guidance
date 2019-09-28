@@ -176,22 +176,22 @@ ul{
       <li>
         <ul>
           <li><input type="checkbox" value="501" id="501" checked="checked" /><label for="501">Studio 501</label></li>
-          <li><input type="text" name="name-501-1" id="name-501-1" value="501の社名" /></li>
-          <li><input type="text" name="name-501-2" id="name-501-2" value="501の担当者" /></li>
+          <li><input type="text" name="client-501-1" id="client-501-1" value="501の社名" /></li>
+          <li><input type="text" name="client-501-2" id="client-501-2" value="501の担当者" /></li>
           </ul>
       </li>
       <li>
           <ul>
               <li><input type="checkbox" value="201" id="201" checked="checked" /><label for="201">Studio 201</label></li>
-              <li><input type="text" name="name-201-1" id="name-201-1" value="201の社名" /></li>
-              <li><input type="text" name="name-201-2" id="name-201-2" value="201の担当者" /></li>
+              <li><input type="text" name="client-201-1" id="client-201-1" value="201の社名" /></li>
+              <li><input type="text" name="client-201-2" id="client-201-2" value="201の担当者" /></li>
           </ul>
       </li>
       <li>
           <ul>
               <li><input type="checkbox" value="102" id="102" checked="checked" /><label for="102">Studio 102</label></li>
-              <li><input type="text" name="name-102-1" id="name-102-1" value="102の社名" /></li>
-              <li><input type="text" name="name-102-2" id="name-102-2" value="102の担当者" /></li>
+              <li><input type="text" name="client-102-1" id="client-102-1" value="102の社名" /></li>
+              <li><input type="text" name="client-102-2" id="client-102-2" value="102の担当者" /></li>
           </ul>
       </li>
       <!-- <li><button id="button-save">保存</button></li> -->
@@ -219,8 +219,8 @@ $(document).ready(function () {
     // 更新処理
     function updatePage() {
         // 各欄の更新処理
-        $("#name2").html($("#name-201-1").val() + '<br>' + $("#name-201-2").val());
-        $("#name3").html($("#name-102-1").val() + '<br>' + $("#name-102-2").val());
+        $("#name2").html($("#client-201-1").val() + '<br>' + $("#client-201-2").val());
+        $("#name3").html($("#client-102-1").val() + '<br>' + $("#client-102-2").val());
 
         var cnt = $('input:checkbox:checked').length;
         var studios = $('input:checkbox:checked').map(function(){return $(this).val();}).get();
@@ -237,7 +237,7 @@ $(document).ready(function () {
           $(".line2").css("top", "86mm");
           $(".line3").css("display", "none");
           $("#studio2").text(studios[0]);
-          $("#name2").html($("#name-" + studios[0] + "-1").val() + '<br>' + $("#name-" + studios[0] + "-2").val());
+          $("#name2").html($("#client-" + studios[0] + "-1").val() + '<br>' + $("#client-" + studios[0] + "-2").val());
         }
         //2行
         else if(cnt == 2){
@@ -247,9 +247,9 @@ $(document).ready(function () {
           $(".line3").css("display", "block");
           $(".line3").css("top", "130mm");
           $("#studio1").text(studios[0]);
-          $("#name1").html($("#name-" + studios[0] + "-1").val() + '<br>' + $("#name-" + studios[0] + "-2").val());
+          $("#name1").html($("#client-" + studios[0] + "-1").val() + '<br>' + $("#client-" + studios[0] + "-2").val());
           $("#studio3").text(studios[1]);
-          $("#name3").html($("#name-" + studios[1] + "-1").val() + '<br>' + $("#name-" + studios[1] + "-2").val());
+          $("#name3").html($("#client-" + studios[1] + "-1").val() + '<br>' + $("#client-" + studios[1] + "-2").val());
         }
         //3行
         else{
@@ -260,11 +260,11 @@ $(document).ready(function () {
           $(".line3").css("display", "block");
           $(".line3").css("top", "152mm");
           $("#studio1").text(studios[0]);
-          $("#name1").html($("#name-" + studios[0] + "-1").val() + '<br>' + $("#name-" + studios[0] + "-2").val());
+          $("#name1").html($("#client-" + studios[0] + "-1").val() + '<br>' + $("#client-" + studios[0] + "-2").val());
           $("#studio2").text(studios[1]);
-          $("#name2").html($("#name-" + studios[1] + "-1").val() + '<br>' + $("#name-" + studios[1] + "-2").val());
+          $("#name2").html($("#client-" + studios[1] + "-1").val() + '<br>' + $("#client-" + studios[1] + "-2").val());
           $("#studio3").text(studios[2]);
-          $("#name3").html($("#name-" + studios[2] + "-1").val() + '<br>' + $("#name-" + studios[2] + "-2").val());
+          $("#name3").html($("#client-" + studios[2] + "-1").val() + '<br>' + $("#client-" + studios[2] + "-2").val());
         }
     }
 </script>
