@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ja">
 <head>
@@ -26,12 +27,42 @@
   ul{
     list-style-type: none;
   }
+  ol{
+    list-style-type: none;
+    margin-left: 0;
+    padding-left: 0;
+  }
   body{
     font-size: 18px;
+  font-family: source-han-sans-japanese, sans-serif;
+  font-weight: 400;
+  font-style: normal;
   }
-  input, button{
+  input.textbox{
     font-size: 18px;
+    font-family: source-han-sans-japanese, sans-serif;
+    font-weight: 400;
+    font-style: normal;
     margin: 3px;
+    width: 300px;
+  }
+  button{
+    font-size: 18px;
+    font-family: source-han-sans-japanese, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin: 3px;
+    width: 100px;
+  }
+  h1{
+    font-size: 36px;
+    font-family: futura-pt, sans-serif;
+    font-weight: 300;
+    font-style: normal;
+  }
+  #status{
+    font-size: 12px;
+    color: silver;
   }
 }
       
@@ -144,6 +175,8 @@ ul{
 </style>
 </head>
   <body>
+
+<!--印刷部 -->
     <div class="page">
     <div class="page-title text-small">編集スタジオのご案内</div>
       <div class="line-left">
@@ -168,41 +201,38 @@ ul{
       </div>
 </div>
 
-
+<!--表示部 -->
 <div class="control">
   <form method="" action="" onsubmit="return false">
     <ul>
       <li><h1>Guidance</h1></li>
       <li>
-        <ul>
+        <ol>
           <li><input type="checkbox" value="501" id="check501" checked="checked" /><label for="check501">Studio 501</label></li>
-          <li><input type="text" name="client501A" id="client501A" value="501 社名" /></li>
-          <li><input type="text" name="client501B" id="client501B" value="501 担当者名" /></li>
-          </ul>
+          <li><input type="text" name="client501A" class="textbox" id="client501A" value="501 社名" /></li>
+          <li><input type="text" name="client501B" class="textbox" id="client501B" value="501 担当者名" /></li>
+          </ol>
       </li>
       <li>
-          <ul>
+          <ol>
               <li><input type="checkbox" value="201" id="check201" checked="checked" /><label for="check201">Studio 201</label></li>
-              <li><input type="text" name="client201A" id="client201A" value="201 社名" /></li>
-              <li><input type="text" name="client201B" id="client201B" value="201 担当者名" /></li>
-          </ul>
+              <li><input type="text" name="client201A" class="textbox" id="client201A" value="201 社名" /></li>
+              <li><input type="text" name="client201B" class="textbox" id="client201B" value="201 担当者名" /></li>
+          </ol>
       </li>
       <li>
-          <ul>
+          <ol>
               <li><input type="checkbox" value="102" id="check102" checked="checked" /><label for="check102">Studio 102</label></li>
-              <li><input type="text" name="client102A" id="client102A" value="102 社名" /></li>
-              <li><input type="text" name="client102B" id="client102B" value="102 担当者名" /></li>
-          </ul>
+              <li><input type="text" name="client102A" class="textbox" id="client102A" value="102 社名" /></li>
+              <li><input type="text" name="client102B" class="textbox" id="client102B" value="102 担当者名" /></li>
+          </ol>
       </li>
-      <li><button id="button-print" style="padding-left: 30px; padding-right: 30px;">印刷</button></li>
-      <li><button id="button-save" style="padding-left: 30px; padding-right: 30px;">保存</button></li>
+      <li><button id="button-save">保存</button><button id="button-print">印刷</button></li>
+                <li id="status">前回情報を取得中...</li>
+
     </ul>
   </form>
 </div>
-<div id="status">前回情報を取得中...</div>
-
-
-
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -211,8 +241,7 @@ $(document).ready(function () {
 
 //読み込み
     $.getJSON('https://script.google.com/macros/s/AKfycbwfPRbaXmw_d2EGNC3cV_ery_MwBh5Htwr73hbf8p9vPWD6okMy/exec')
-       // jsonの読み込みに成功した時
-      .done(function(json){
+      .done(function(json){ //成功
         console.log(json);
         $("#status").text('前回の情報を取得しました');
         
@@ -234,45 +263,20 @@ $(document).ready(function () {
         $("#client102A").val(json['client102A']);
         $("#client102B").val(json['client102B']);
         
-      })
-       // jsonの読み込みに失敗した時
-      .fail(function(){
+      }).fail(function(){ //失敗
         $("#status").text('前回情報の取得に失敗しました。');
-      });
-    
+      }).always(function(){ //常に
+        updatePage();
+    });
 
+//// 入力項目の更新に応じてプレビューも変更
+$('input').on('keyup', function () {
+    updatePage();
+})
+    
 //保存
 $("#button-save").click(function() {
-    $("#button-save").attr("disabled", true);
-    $("#status").text('サーバに保存中...');
-
-    var data = {
-        check501: $("#check501").val(),
-        client501A: $("#client501A").val(),
-        client501B: $("#client501B").val(),
-        check201: $("#check201").val(),
-        client201A: $("#client201A").val(),
-        client201B: $("#client201B").val(),
-        check102: $("#check102").val(),
-        client102A: $("#client102A").val(),
-        client102B: $("#client102B").val(),
-    };
-
-    // 通信実行
-    $.ajax({
-        type:"get",
-        url:"https://script.google.com/macros/s/AKfycbwfPRbaXmw_d2EGNC3cV_ery_MwBh5Htwr73hbf8p9vPWD6okMy/exec",
-        data: data,
-        success: function(json_data) {   // 200 OK時
-            $("#status").text('保存しました');
-        },
-        error: function() {         // HTTPエラー時
-            $("#status").text('保存に失敗しました');
-        },
-        complete: function() {      // 成功・失敗に関わらず通信が終了した際の処理
-            $("#button-save").attr("disabled", false);  // ボタンを再び enableにする
-        }
-    });
+  saveGas();
 });
 
 
@@ -285,6 +289,7 @@ $("#button-save").click(function() {
         } else {
           alert('Tips\n・送信先プリンターをお間違えなく\n・ヘッダーとフッターを非表示にしてください\n　（iOSでは設定できないので、必ず印刷されます）\n\niPhone/Safariの場合\n・空の2ページ目が出力されるので、ページ範囲で無効にしてください');
           window.print();
+          saveGas();
       }
     })
 })
@@ -339,7 +344,38 @@ $("#button-save").click(function() {
           $("#studio3").text(studios[2]);
           $("#name3").html($("#client" + studios[2] + "A").val() + '<br>' + $("#client" + studios[2] + "B").val());
         }
+      $("div.page").css("font-family", "source-han-sans-japanese, sans-serif");
+      $("div.page").css("font-weight", "100");
+      $("div.page").css("font-style", "normal");
     }
+
+function saveGas(){
+      $("#button-save").attr("disabled", true);
+      $("#status").text('サーバに保存中...');
+        var data = {
+            check501: $("#check501:checked").val(),
+            client501A: $("#client501A").val(),
+            client501B: $("#client501B").val(),
+            check201: $("#check201:checked").val(),
+            client201A: $("#client201A").val(),
+            client201B: $("#client201B").val(),
+            check102: $("#check102:checked").val(),
+            client102A: $("#client102A").val(),
+            client102B: $("#client102B").val(),
+        };
+        // 通信実行
+        $.ajax({
+            type:"get",
+            url:"https://script.google.com/macros/s/AKfycbwfPRbaXmw_d2EGNC3cV_ery_MwBh5Htwr73hbf8p9vPWD6okMy/exec",
+            data: data})
+            .done(function(json_data){
+                $("#status").text('保存しました');
+            }).fail(function(){
+                $("#status").text('保存に失敗しました');
+            }).always(function(){
+                $("#button-save").attr("disabled", false);  // ボタンを再び enableにする
+      });
+}
 </script>
   </body>
 </html>
