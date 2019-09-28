@@ -260,7 +260,7 @@ $("#button-save").click(function() {
 
     // 通信実行
     $.ajax({
-        type:"post",
+        type:"get",
         url:"https://script.google.com/macros/s/AKfycbwfPRbaXmw_d2EGNC3cV_ery_MwBh5Htwr73hbf8p9vPWD6okMy/exec",
         data: data,
         success: function(json_data) {   // 200 OK時
