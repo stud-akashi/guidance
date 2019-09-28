@@ -201,40 +201,25 @@ ul{
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript">
-        $(document).ready(function () {
+$(document).ready(function () {
 
-        //// 入力項目の更新に応じてプレビューも変更
-        $('input').on('keyup', function () {
-            updatePreview();
-        })
-
-        //// 入力項目の更新に応じてプレビューも変更
-        $('input').change(function () {
-            updatePreview();
-        })
-
-        //// 印刷ボタンクリック時（印刷画面をオープンする）
-        $('#button-print').on('click', function (e) {
-        var cnt = $('input:checkbox:checked').length;
-          if(cnt == 0){
-            alert('全部屋が無効になっています。');
-          } else {
-            window.print();
-        }
-        })
-
-        // 画面初期化処理
-        updatePreview();
-
+    //// 印刷ボタンクリック時（印刷画面をオープンする）
+    $('#button-print').on('click', function (e) {
+    updatePage();
+      var cnt = $('input:checkbox:checked').length;
+        if(cnt == 0){
+          alert('全部屋が無効になっています。');
+        } else {
+          window.print();
+      }
     })
+})
 
-    // プレビューの更新処理
-    function updatePreview() {
-
+    // 更新処理
+    function updatePage() {
         // 各欄の更新処理
         $("#name2").html($("#name-201-1").val() + '<br>' + $("#name-201-2").val());
         $("#name3").html($("#name-102-1").val() + '<br>' + $("#name-102-2").val());
-
 
         var cnt = $('input:checkbox:checked').length;
         var studios = $('input:checkbox:checked').map(function(){return $(this).val();}).get();
