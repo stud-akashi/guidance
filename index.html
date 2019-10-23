@@ -224,7 +224,7 @@ ul{
 
 <!--表示部 -->
 <div class="control">
-  <form method="" action="" onsubmit="return false">
+<form method="" action="" onsubmit="return false">
 <datalist id="clientList">
 <option>AOI Pro.</option>
 <option>東北新社</option>
@@ -338,13 +338,13 @@ $("#check102").click(function () {
 })
 
 
-//保存
+//保存ボタン
 $("#button-save").click(function() {
   saveGas();
 });
 
 
-//印刷
+//印刷ボタン
     $('#button-print').on('click', function (e) {
     updatePage();
       var cnt = $('input:checkbox:checked').length;
@@ -358,7 +358,7 @@ $("#button-save").click(function() {
     })
 })
 
-// 更新処理
+//ページ更新
     function updatePage() {
         // 各欄の更新処理
         $("#name2").html($("#client201A").val() + '<br>' + $("#client201B").val());
@@ -413,10 +413,12 @@ $("#button-save").click(function() {
       $("div.page").css("font-style", "normal");
     }
 
+//保存
 function saveGas(){
       $("#button-save").attr("disabled", true);
       $("#status").text('サーバに保存中...');
         var data = {
+            mode: "edit",
             check501: $("#check501:checked").val(),
             client501A: $("#client501A").val(),
             client501B: $("#client501B").val(),
@@ -434,12 +436,29 @@ function saveGas(){
             data: data})
             .done(function(json_data){
                 $("#status").text('保存しました');
+                setTimeout(function(){
+                  $("#status").fadeOut("1000");
+                  getDate();
+                },3000);
             }).fail(function(){
                 $("#status").text('保存に失敗しました');
             }).always(function(){
                 $("#button-save").attr("disabled", false);  // ボタンを再び enableにする
       });
 }
+
+function getDate(){
+  //読み込み
+    $.getJSON('https://script.google.com/macros/s/AKfycbwfPRbaXmw_d2EGNC3cV_ery_MwBh5Htwr73hbf8p9vPWD6okMy/exec')
+      .done(function(json){ //成功
+        console.log(json);
+        $("#status").text('最終更新：' + json['lastUpdate']);
+        $("#status").fadeIn("1000");
+        
+      }).fail(function(){ //失敗
+        $("#status").text('前回情報の取得に失敗しました');
+        $("#status").fadeIn("1000");
+      });}
 </script>
   </body>
 </html>
