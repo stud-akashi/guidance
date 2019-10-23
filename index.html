@@ -276,18 +276,24 @@ $(document).ready(function () {
         
         if(json['check501'] != '501'){
           $("#check501").prop('checked', false);
+          $("#client501A").prop('disabled', true);
+          $("#client501B").prop('disabled', true);
         }
         $("#client501A").val(json['client501A']);
         $("#client501B").val(json['client501B']);
         
         if(json['check201'] != '201'){
           $("#check201").prop('checked', false);
+          $("#client201A").prop('disabled', true);
+          $("#client201B").prop('disabled', true);
         }
         $("#client201A").val(json['client201A']);
         $("#client201B").val(json['client201B']);
         
         if(json['check102'] != '102'){
           $("#check102").prop('checked', false);
+          $("#client102A").prop('disabled', true);
+          $("#client102B").prop('disabled', true);
         }
         $("#client102A").val(json['client102A']);
         $("#client102B").val(json['client102B']);
